@@ -13,6 +13,7 @@ using VOL.Entity.SystemModels;
 
 namespace VOL.Entity.DomainModels
 {
+    [Table("App_ReportPrice")]
     [Entity(TableCnName = "新增编辑表单",TableName = "App_ReportPrice")]
     public class App_ReportPrice:BaseEntity
     {
@@ -46,9 +47,9 @@ namespace VOL.Entity.DomainModels
        public string Age { get; set; }
 
        /// <summary>
-       ///报价城市
+       ///城市
        /// </summary>
-       [Display(Name ="报价城市")]
+       [Display(Name ="城市")]
        [MaxLength(30)]
        [Column(TypeName="nvarchar(30)")]
        [Editable(true)]
@@ -56,9 +57,9 @@ namespace VOL.Entity.DomainModels
        public string City { get; set; }
 
        /// <summary>
-       ///上报价格
+       ///价格
        /// </summary>
-       [Display(Name ="上报价格")]
+       [Display(Name ="价格")]
        [Column(TypeName="numeric")]
        [Editable(true)]
        [Required(AllowEmptyStrings=false)]
@@ -139,7 +140,6 @@ namespace VOL.Entity.DomainModels
        [Display(Name ="测试")]
        [MaxLength(60)]
        [Column(TypeName="nvarchar(60)")]
-       [Editable(true)]
        public string Modifier { get; set; }
 
        /// <summary>

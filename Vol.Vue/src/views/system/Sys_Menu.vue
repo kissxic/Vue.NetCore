@@ -98,21 +98,21 @@ export default {
   },
   methods: {
     otherAction() {
-      if (!this.$refs.actionForm.validate()) {
-        return;
-      }
-      let exist = this.action.some(x => {
-        return (
-          x.text == this.actionFields.name || x.value == this.actionFields.value
-        );
-      });
-      if (exist) {
-        return this.$message.error("权限名称或权限值已存在");
-      }
-      this.actionModel = false;
-      this.action.push({
-        text: this.actionFields.name,
-        value: this.actionFields.value
+      this.$refs.actionForm.validate(() => {
+        let exist = this.action.some(x => {
+          return (
+            x.text == this.actionFields.name ||
+            x.value == this.actionFields.value
+          );
+        });
+        if (exist) {
+          return this.$message.error("权限名称或权限值已存在");
+        }
+        this.actionModel = false;
+        this.action.push({
+          text: this.actionFields.name,
+          value: this.actionFields.value
+        });
       });
     },
     handleCheckAll() {
@@ -158,45 +158,48 @@ export default {
       this.add({ parentId: this.fields.parentId });
     },
     save() {
-      if (!this.$refs.form.validate()) {
-        return;
-      }
-      this.fields.auth = "";
-      if (this.actions) {
-        this.fields.auth = this.action.filter(x => {
-          return this.actions.indexOf(x.value) != -1;
-        });
-      }
-      if (
-        this.fields.auth &&
-        this.fields.auth instanceof Array &&
-        this.fields.auth.length > 0
-      ) {
-        this.fields.auth = JSON.stringify(this.fields.auth);
-      } else {
+      this.$refs.form.validate(() => {
         this.fields.auth = "";
-      }
-      this.fields.icon = this.icon;
-      this.http.post("/api/menu/save", this.fields, true).then(x => {
-        this.$message.success(x.message);
-        if (!x.status) return;
-        if (this.fields.menu_Id) {
-          this.tree.forEach(t => {
-            if (t.id == this.fields.menu_Id) {
-              t.name = this.fields.menuName;
-              t.orderNo = this.fields.orderNo;
-              t.parentId = this.fields.parentId;
-            }
+        if (this.actions) {
+          this.fields.auth = this.action.filter(x => {
+            return this.actions.indexOf(x.value) != -1;
           });
-          return;
         }
-        this.fields.menu_Id = x.data.menu_Id;
-        this.fields.createDate = x.data.createDate;
-        this.tree.push({
-          id: x.data.menu_Id,
-          name: this.fields.menuName,
-          orderNo: this.fields.orderNo,
-          parentId: this.fields.parentId
+        if (
+          this.fields.auth &&
+          this.fields.auth instanceof Array &&
+          this.fields.auth.length > 0
+        ) {
+          this.fields.auth = JSON.stringify(this.fields.auth);
+        } else {
+          this.fields.auth = "";
+        }
+        this.fields.icon = this.icon;
+        this.http.post("/api/menu/save", this.fields, true).then(x => {
+          if (!x.status) {
+            this.$Message.error(x.message);
+            return;
+          }
+
+          this.$Message.info(x.message);
+          if (this.fields.menu_Id) {
+            this.tree.forEach(t => {
+              if (t.id == this.fields.menu_Id) {
+                t.name = this.fields.menuName;
+                t.orderNo = this.fields.orderNo;
+                t.parentId = this.fields.parentId;
+              }
+            });
+            return;
+          }
+          this.fields.menu_Id = x.data.menu_Id;
+          this.fields.createDate = x.data.createDate;
+          this.tree.push({
+            id: x.data.menu_Id,
+            name: this.fields.menuName,
+            orderNo: this.fields.orderNo,
+            parentId: this.fields.parentId
+          });
         });
       });
     },
@@ -229,11 +232,16 @@ export default {
           try {
             if (x.auth) {
               x.auth = JSON.parse(x.auth);
+              this.action.splice(8, this.action.length);
               this.actions = x.auth.map(element => {
+                if (this.actionValues.indexOf(element.value) == -1) {
+                  this.action.push(element);
+                }
                 return element.value;
               });
               this.icon = x.icon;
             } else {
+              this.action.splice(8, this.action.length);
               x.auth = [];
               this.icon = "";
               this.actions = [];
@@ -249,6 +257,9 @@ export default {
     }
   },
   created() {
+    this.actionValues = this.action.map(x => {
+      return x.value;
+    });
     this.http.post("/api/menu/getMenu", {}, true).then(x => {
       this.tree = x;
     });
@@ -270,6 +281,7 @@ export default {
         { text: "上传", value: "Upload" },
         { text: "审核", value: "Audit" }
       ],
+      actionValues: [],
       actions: [],
       icon: "",
       model: false,

@@ -32,14 +32,14 @@ namespace VOL.Core.Filters
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if ((await OnActionExecutionPermission(context)).Status)
+            if (OnActionExecutionPermission(context).Status)
             {
                 await next();
                 return;
             }
             FilterResponse.SetActionResult(context, ResponseContent);
         }
-        private async Task<WebResponseContent> OnActionExecutionPermission(ActionExecutingContext context)
+        private WebResponseContent OnActionExecutionPermission(ActionExecutingContext context)
         {
             //!context.Filters.Any(item => item is IFixedTokenFilter))固定token的是否验证权限
             //if ((context.Filters.Any(item => item is IAllowAnonymousFilter)
@@ -95,8 +95,8 @@ namespace VOL.Core.Filters
                     return ResponseContent.Error(ResponseType.NoRolePermissions);
                 }
             }
-
-            var actionAuth = await Task.Run(() => _userContext.GetPermissions(x => x.TableName.ToLower() == ActionPermission.TableName.ToLower())?.UserAuthArr);
+            //2020.05.05移除x.TableName.ToLower()转换,获取权限时已经转换成为小写
+            var actionAuth =  _userContext.GetPermissions(x => x.TableName == ActionPermission.TableName.ToLower())?.UserAuthArr;
 
             if (actionAuth == null
                  || actionAuth.Count() == 0

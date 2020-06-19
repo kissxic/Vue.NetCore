@@ -87,257 +87,1171 @@ let codeString = {
       methods: {}
     };
     // ]]></script>`,
-  form: `<div class="cnblogs_code">
-  <pre>&lt;template&gt;
-    &lt;div&gt;
-      &lt;div class="i-text"&gt;
-        &lt;h2&gt;组件引入方式&lt;/h2&gt;
-      &lt;/div&gt;
-      &lt;pre class="bg-ms"&gt;
-          &lt;code&gt;<span style="color: #000000;">
-           import VolForm from </span>"@/components/basic/VolForm.vue"<span style="color: #000000;">;
-          </span>&lt;/code&gt;
-        &lt;/pre&gt;
-      &lt;div class="i-text"&gt;
-        &lt;h2&gt;表单&lt;/h2&gt;
-      &lt;/div&gt;
-      &lt;<span style="color: #000000;">VolForm
-        ref</span>="myform"<span style="color: #000000;">
-        :label</span>-width="150"<span style="color: #000000;">
-        :loadKey</span>="true"<span style="color: #000000;">
-        :formFileds</span>="formFileds1"<span style="color: #000000;">
-        :formRules</span>="formRules1"
-      &gt;&lt;/VolForm&gt;
-      &lt;div&gt;
-        &lt;Button type="info" <span style="color: #0000ff;">long</span> @click="reset"&gt;重置表单&lt;/Button&gt;
-      &lt;/div&gt;
-      &lt;div&gt;
-        &lt;docParamTable name="form"&gt;&lt;/docParamTable&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/template&gt;
-  &lt;script&gt;<span style="color: #000000;">
-  import VolForm from </span>"@/components/basic/VolForm.vue"<span style="color: #000000;">;
-  import docParamTable from </span>"./doc_ParamTable.vue"<span style="color: #000000;">;
-  export </span><span style="color: #0000ff;">default</span><span style="color: #000000;"> {
-    components: { VolForm, docParamTable },
-    methods: {
-      reset() {
-        </span><span style="color: #0000ff;">this</span><span style="color: #000000;">.$refs.myform.reset();
-        </span><span style="color: #0000ff;">this</span>.$Message.error("表单已重置"<span style="color: #000000;">);
-      }
-    },
-    data() {
-      </span><span style="color: #0000ff;">return</span><span style="color: #000000;"> {
-        formFileds1: {
-          Variety: </span>1<span style="color: #000000;">,
-          AgeRange: </span>""<span style="color: #000000;">,
-          DateRange: [],
-          City: </span>"北京市"<span style="color: #000000;">,
-          AvgPrice: </span>8.88<span style="color: #000000;">,
-          number1: </span>20<span style="color: #000000;">,
-          mail: </span>""<span style="color: #000000;">,
-          Date: </span>""<span style="color: #000000;">,
-          IsTop: </span>""<span style="color: #000000;">,
-          Fruits: [],
-          Other: </span>""<span style="color: #000000;">,
-          extra1:</span>"添加其他标签"<span style="color: #000000;">,
-          extra2:</span>"添加其他标签可点击"<span style="color: #000000;">,
-          Switch: </span>1<span style="color: #000000;">,
-          SelectList: [</span>"北京市", "上海市", "天津市", "广州市", "重庆市"<span style="color: #000000;">],
-          readonlyText: </span>"还没想好...."<span style="color: #000000;">,
-          readonlyImg:
-            </span>"https://imgs-1256993465.cos.ap-chengdu.myqcloud.com/h5pic/x2.jpg"<span style="color: #000000;">,
-          ProImg:
-            </span>"https://imgs-1256993465.cos.ap-chengdu.myqcloud.com/h5pic/x3.jpg"
-          <span style="color: #008000;">//</span><span style="color: #008000;">多个图片可以用逗号隔开</span>
-  <span style="color: #000000;">      },
-        formRules1: [
-          </span><span style="color: #008000;">//</span><span style="color: #008000;">两列的表单，formRules数据格式为:[[{},{}]]</span>
-  <span style="color: #000000;">        [
-            {
-              dataKey: </span>"city"<span style="color: #000000;">,
-              title: </span>"自动绑定数据源"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              field: </span>"City"<span style="color: #000000;">,
-              data: [],
-              type: </span>"select"<span style="color: #000000;">
-            },
-            {
-              title: </span>"手动绑定数据源"<span style="color: #000000;">,
-              dataKey: </span>"age"<span style="color: #000000;">,
-              placeholder: </span>"在这里可设置提示描述"<span style="color: #000000;">,
-              </span><span style="color: #008000;">//</span><span style="color: #008000;">如果这里绑定了data数据，后台不会加载此数据源</span>
-              data: [{ key: 1, value: "是" }, { key: 0, value: "否"<span style="color: #000000;"> }],
-              required: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
-              field: </span>"Variety"<span style="color: #000000;">,
-              type: </span>"select"<span style="color: #000000;">
-            }
-          ],
-          [
-            {
-              title: </span>"手机号"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span>, <span style="color: #008000;">//</span><span style="color: #008000;">设置为必选项</span>
-              field: "AgeRange"<span style="color: #000000;">,
-              type: </span>"phone"<span style="color: #000000;">,
-              onKeyPress: $event </span>=&gt;<span style="color: #000000;"> {
-                </span><span style="color: #0000ff;">if</span> ($event.keyCode == 13<span style="color: #000000;">) {
-                  </span><span style="color: #0000ff;">this</span>.$Message.error(<span style="color: #0000ff;">this</span>.formFileds1.AgeRange + ""<span style="color: #000000;">);
-                }
-              }
-            },
-            {
-              title: </span>"date日期"<span style="color: #000000;">,
-              field: </span>"Date"<span style="color: #000000;">,
-              type: </span>"datetime"<span style="color: #000000;">
-            }
-          ],
-          [
-            {
-              title: </span>"多选日期"<span style="color: #000000;">,
-              range: </span><span style="color: #0000ff;">true</span>, <span style="color: #008000;">//</span><span style="color: #008000;">设置为true可以选择开始与结束日期</span>
-              required: <span style="color: #0000ff;">false</span><span style="color: #000000;">,
-              field: </span>"DateRange"<span style="color: #000000;">,
-              type: </span>"date"<span style="color: #000000;">
-            },
-            {
-              type: </span>"number"<span style="color: #000000;">,
-              title: </span>"数字"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              placeholder: </span>"你可以自己定义placeholder显示的文字"<span style="color: #000000;">,
-              field: </span>"number1"<span style="color: #000000;">
-            }
-          ],
-          [
-            {
-              type: </span>"decimal"<span style="color: #000000;">,
-              title: </span>"最大最小decimal值"<span style="color: #000000;">,
-              max: </span>10<span style="color: #000000;">,
-              min: </span>2<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              field: </span>"AvgPrice"<span style="color: #000000;">
-            },
-            {
-              title: </span>"邮箱"<span style="color: #000000;">,
-              field: </span>"mail"<span style="color: #000000;">,
-              range: </span><span style="color: #0000ff;">true</span>, <span style="color: #008000;">//</span><span style="color: #008000;">设置为true可以选择开始与结束日期</span>
-              required: <span style="color: #0000ff;">false</span><span style="color: #000000;">,
-              type: </span>"mail"<span style="color: #000000;">
-            }
-          ],
-           [
-            {
-              title: </span>"额外标签"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              type: </span>"text"<span style="color: #000000;">,
-              field: </span>"extra1"<span style="color: #000000;">,
-              extra: {
-                icon: </span>"ios-search"<span style="color: #000000;">,
-                style: </span>"color:red"<span style="color: #000000;">,
-                text: </span>"这里可以显示额外标签"<span style="color: #000000;">
-              }
-            },
-            {
-              title: </span>"可点击额外标签"<span style="color: #000000;">,
-              field: </span>"extra2"<span style="color: #000000;">,
-              type: </span>"text"<span style="color: #000000;">,
-              extra: {
-                icon: </span>"ios-search"<span style="color: #000000;">,
-                text: </span>"点击可触发事件"<span style="color: #000000;">,
-                click: item </span>=&gt;<span style="color: #000000;"> {
-                  </span><span style="color: #0000ff;">this</span>.$Message.error("点击标签触发的事件"<span style="color: #000000;">);
-                }
-              }
-            }
-          ],
-          [
-            {
-              dataKey: </span>"city"<span style="color: #000000;">,
-              title: </span>"多选"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              field: </span>"SelectList"<span style="color: #000000;">,
-              data: [],
-              colSize: </span>12<span style="color: #000000;">,
-              type: </span>"selectList"<span style="color: #000000;">
-            }
-          ],
-          [
-            {
-              title: </span>"自定义验证"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              field: </span>"Other"<span style="color: #000000;">,
-              validator: (rule, val) </span>=&gt;<span style="color: #000000;"> {
-                </span><span style="color: #0000ff;">if</span> (val != "234"<span style="color: #000000;">) {
-                  </span><span style="color: #0000ff;">return</span> "必须输入【234】"<span style="color: #000000;">;
-                }
-                </span><span style="color: #0000ff;">return</span> ""<span style="color: #000000;">;
-              }
-            },
-            {
-              title: </span>"Switch"<span style="color: #000000;">,
-              field: </span>"Switch"<span style="color: #000000;">,
-              dataKey: </span>"enable", <span style="color: #008000;">//</span><span style="color: #008000;">这里会从后台自动绑定数据源</span>
-  <span style="color: #000000;">            data: [],
-              required: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
-              type: </span>"switch"<span style="color: #000000;">
-            }
-          ],
-          [
-            </span><span style="color: #008000;">//</span><span style="color: #008000;">readonlyImg</span>
-  <span style="color: #000000;">          {
-              title: </span>"checkbox"<span style="color: #000000;">,
-              </span><span style="color: #008000;">//</span><span style="color: #008000;">如果这里绑定了data数据，后台不会加载此数据源</span>
-  <span style="color: #000000;">            data: [
-                { key: </span>0, value: "冬瓜"<span style="color: #000000;"> },
-                { key: </span>1, value: "西瓜"<span style="color: #000000;"> },
-                { key: </span>2, value: "南瓜"<span style="color: #000000;"> },
-                { key: </span>3, value: "哈密瓜"<span style="color: #000000;"> }
-              ],
-              field: </span>"Fruits"<span style="color: #000000;">,
-              type: </span>"checkbox"<span style="color: #000000;">
-            },
-            {
-              title: </span>"字段只读"<span style="color: #000000;">,
-              readonly: </span><span style="color: #0000ff;">true</span>, <span style="color: #008000;">//</span><span style="color: #008000;">设置readonly或disabled都行</span>
-              field: "readonlyText"<span style="color: #000000;">,
-              type: </span>"text"<span style="color: #000000;">
-            }
-          ],
-          [
-            {
-              title: </span>"备注"<span style="color: #000000;">,
-              required: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
-              field: </span>"IsTop"<span style="color: #000000;">,
-              min: </span>3<span style="color: #000000;">,
-              max: </span>5<span style="color: #000000;">,
-              placeholder: </span>"至少输入3个字符,最多只能输入5个字符"<span style="color: #000000;">,
-              colSize: </span>12, <span style="color: #008000;">//</span><span style="color: #008000;">设置12，此列占100%宽度</span>
-              type: "textarea"<span style="color: #000000;">
-            }
-          ],
-          [
-            {
-              title: </span>"图片只读"<span style="color: #000000;">,
-              readonly: </span><span style="color: #0000ff;">true</span>, <span style="color: #008000;">//</span><span style="color: #008000;">设置readonly或disabled都行</span>
-              field: "readonlyImg"<span style="color: #000000;">,
-              type: </span>"img"<span style="color: #000000;">
-            },
-            {
-              title: </span>"可上传图片"<span style="color: #000000;">,
-              field: </span>"ProImg"<span style="color: #000000;">,
-              type: </span>"img"<span style="color: #000000;">,
-              maxSize: </span>0.2, <span style="color: #008000;">//</span><span style="color: #008000;">最大0.2M图片</span>
-              <span style="color: #008000;">//</span><span style="color: #008000;">上传参数可参照volupload组件</span>
-              url: "/api/App_Appointment/Upload"<span style="color: #000000;">
-            }
-          ]
-        ]
-      };
-    }
-  };
-  </span>&lt;/script&gt;</pre>
-  </div>
-  <p>&nbsp;</p></p>`,
+  form: `<div style="color:#D4D4D4;background-color:#1E1E1E;font-family:Consolas, &quot;font-size:14px;line-height:19px;white-space:pre;">
+	<div>
+		<span style="color:#808080;">&lt;</span><span style="color:#569cd6;">template</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;<span style="color:#808080;">&lt;</span><span style="color:#569cd6;">div</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080;">&lt;</span><span style="color:#569cd6;">VolForm</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">ref</span>=<span style="color:#ce9178;">"myform"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span style="color:#9cdcfe;">label-width</span>="<span style="color:#b5cea8;">150</span>"
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span style="color:#9cdcfe;">loadKey</span>="<span style="color:#569cd6;">true</span>"
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span style="color:#9cdcfe;">formFileds</span>="<span style="color:#9cdcfe;">formFileds1</span>"
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span style="color:#9cdcfe;">formRules</span>="<span style="color:#9cdcfe;">formRules1</span>"
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080;">&gt;&lt;/</span><span style="color:#569cd6;">VolForm</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080;">&lt;</span><span style="color:#569cd6;">div</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080;">&lt;</span><span style="color:#569cd6;">Button</span>&nbsp;<span style="color:#9cdcfe;">type</span>=<span style="color:#ce9178;">"info"</span>&nbsp;<span style="color:#9cdcfe;">long</span>&nbsp;@<span style="color:#9cdcfe;">click</span>="<span style="color:#9cdcfe;">reset</span>"<span style="color:#808080;">&gt;</span>重置表单<span style="color:#808080;">&lt;/</span><span style="color:#569cd6;">Button</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#808080;">&lt;/</span><span style="color:#569cd6;">div</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;<span style="color:#808080;">&lt;/</span><span style="color:#569cd6;">div</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		<span style="color:#808080;">&lt;/</span><span style="color:#569cd6;">template</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		<span style="color:#808080;">&lt;</span><span style="color:#569cd6;">script</span><span style="color:#808080;">&gt;</span>
+	</div>
+	<div>
+		<span style="color:#c586c0;">import</span>&nbsp;<span style="color:#9cdcfe;">VolForm</span>&nbsp;<span style="color:#c586c0;">from</span>&nbsp;<span style="color:#ce9178;">"@/components/basic/VolForm.vue"</span>;
+	</div>
+	<div>
+		<span style="color:#c586c0;">export</span>&nbsp;<span style="color:#c586c0;">default</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;<span style="color:#9cdcfe;">components:</span>&nbsp;{&nbsp;<span style="color:#9cdcfe;">VolForm</span>&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;<span style="color:#9cdcfe;">methods:</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">reset</span>()&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">this</span>.<span style="color:#9cdcfe;">$refs</span>.<span style="color:#9cdcfe;">myform</span>.<span style="color:#dcdcaa;">reset</span>();
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">this</span>.<span style="color:#9cdcfe;">$Message</span>.<span style="color:#dcdcaa;">error</span>(<span style="color:#ce9178;">"表单已重置"</span>);
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;<span style="color:#dcdcaa;">data</span>()&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">return</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">formFileds1:</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">Variety:</span>&nbsp;<span style="color:#b5cea8;">1</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">AgeRange:</span>&nbsp;<span style="color:#ce9178;">""</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">DateRange:</span>&nbsp;[],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">City:</span>&nbsp;<span style="color:#ce9178;">"北京市"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">AvgPrice:</span>&nbsp;<span style="color:#b5cea8;">8.88</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">number1:</span>&nbsp;<span style="color:#b5cea8;">20</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">mail:</span>&nbsp;<span style="color:#ce9178;">""</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">Date:</span>&nbsp;<span style="color:#ce9178;">""</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">IsTop:</span>&nbsp;<span style="color:#ce9178;">""</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">Fruits:</span>&nbsp;[],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">Other:</span>&nbsp;<span style="color:#ce9178;">""</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">extra1:</span>&nbsp;<span style="color:#ce9178;">"添加其他标签"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">extra2:</span>&nbsp;<span style="color:#ce9178;">"添加其他标签可点击"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">Switch:</span>&nbsp;<span style="color:#b5cea8;">1</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">SelectList:</span>&nbsp;[<span style="color:#ce9178;">"北京市"</span>,&nbsp;<span style="color:#ce9178;">"上海市"</span>,&nbsp;<span style="color:#ce9178;">"天津市"</span>,&nbsp;<span style="color:#ce9178;">"广州市"</span>,&nbsp;<span style="color:#ce9178;">"重庆市"</span>],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">remoteSearch:</span>&nbsp;<span style="color:#ce9178;">""</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">readonlyText:</span>&nbsp;<span style="color:#ce9178;">"还没想好...."</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//多个图片可以用逗号隔开</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">readonlyImg:</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ce9178;">"https://imgs-1256993465.cos.ap-chengdu.myqcloud.com/h5pic/x2.jpg"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">ProImg:</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ce9178;">"https://imgs-1256993465.cos.ap-chengdu.myqcloud.com/h5pic/x3.jpg"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">cascader1:</span>&nbsp;[<span style="color:#ce9178;">"beijing"</span>,&nbsp;<span style="color:#ce9178;">"tiantan"</span>],&nbsp;<span style="color:#6a9955;">//级联默认值2020.05.31</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">cascader2:</span>&nbsp;[]&nbsp;<span style="color:#6a9955;">//懒加载的级联默认值</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">formRules1:</span>&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//两列的表单，formRules数据格式为:[[{},{}]]</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">dataKey:</span>&nbsp;<span style="color:#ce9178;">"city"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"自动绑定数据源"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"City"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"select"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"手动绑定数据源"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">dataKey:</span>&nbsp;<span style="color:#ce9178;">"age"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">placeholder:</span>&nbsp;<span style="color:#ce9178;">"在这里可设置提示描述"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//如果这里绑定了data数据，后台不会加载此数据源</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<span style="color:#9cdcfe;">key:</span>&nbsp;<span style="color:#b5cea8;">1</span>,&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"是"</span>&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<span style="color:#9cdcfe;">key:</span>&nbsp;<span style="color:#b5cea8;">0</span>,&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"否"</span>&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">false</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"Variety"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"select"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"手机号"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,&nbsp;<span style="color:#6a9955;">//设置为必选项</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"AgeRange"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"phone"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">onKeyPress</span><span style="color:#9cdcfe;">:</span>&nbsp;<span style="color:#9cdcfe;">$event</span>&nbsp;<span style="color:#569cd6;">=&gt;</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">if</span>&nbsp;(<span style="color:#9cdcfe;">$event</span>.<span style="color:#9cdcfe;">keyCode</span>&nbsp;==&nbsp;<span style="color:#b5cea8;">13</span>)&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">this</span>.<span style="color:#9cdcfe;">$Message</span>.<span style="color:#dcdcaa;">error</span>(<span style="color:#569cd6;">this</span>.<span style="color:#9cdcfe;">formFileds1</span>.<span style="color:#9cdcfe;">AgeRange</span>&nbsp;+&nbsp;<span style="color:#ce9178;">""</span>);
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"date日期"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"Date"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"datetime"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"多选日期"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">range:</span>&nbsp;<span style="color:#569cd6;">true</span>,&nbsp;<span style="color:#6a9955;">//设置为true可以选择开始与结束日期</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">false</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"DateRange"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"date"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"number"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"数字"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">placeholder:</span>&nbsp;<span style="color:#ce9178;">"你可以自己定义placeholder显示的文字"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"number1"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"decimal"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"最大最小decimal值"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">max:</span>&nbsp;<span style="color:#b5cea8;">10</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">min:</span>&nbsp;<span style="color:#b5cea8;">2</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"AvgPrice"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"邮箱"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"mail"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">range:</span>&nbsp;<span style="color:#569cd6;">true</span>,&nbsp;<span style="color:#6a9955;">//设置为true可以选择开始与结束日期</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">false</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"mail"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"额外标签"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"text"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"extra1"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">extra:</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">icon:</span>&nbsp;<span style="color:#ce9178;">"ios-search"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">style:</span>&nbsp;<span style="color:#ce9178;">"color:red"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">text:</span>&nbsp;<span style="color:#ce9178;">"这里可以显示额外标签"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"可点击额外标签"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"extra2"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"text"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">extra:</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">icon:</span>&nbsp;<span style="color:#ce9178;">"ios-search"</span>,&nbsp;<span style="color:#6a9955;">//显示图标</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">text:</span>&nbsp;<span style="color:#ce9178;">"点击可触发事件"</span>,&nbsp;<span style="color:#6a9955;">//显示文本</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//触发事件</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">click</span><span style="color:#9cdcfe;">:</span>&nbsp;<span style="color:#9cdcfe;">item</span>&nbsp;<span style="color:#569cd6;">=&gt;</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">this</span>.<span style="color:#9cdcfe;">$Message</span>.<span style="color:#dcdcaa;">error</span>(<span style="color:#ce9178;">"点击标签触发的事件"</span>);
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">dataKey:</span>&nbsp;<span style="color:#ce9178;">"city"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"多选"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"SelectList"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"selectList"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">dataKey:</span>&nbsp;<span style="color:#ce9178;">"city"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"远程搜索"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"remoteSearch"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">remote:</span>&nbsp;<span style="color:#569cd6;">true</span>,&nbsp;<span style="color:#6a9955;">//远程搜索(从后台字典搜索,只会搜索自定义sql,后台如果返回的数据量较大，请将字典维护的sql取top)</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//url:'api/xx/xx'从指定url搜索&nbsp;返回格式必须是[{key:'xxxx',value:'xxx'}]</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"select"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"自定义验证"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"Other"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">validator</span><span style="color:#9cdcfe;">:</span>&nbsp;(<span style="color:#9cdcfe;">rule</span>,&nbsp;<span style="color:#9cdcfe;">val</span>)&nbsp;<span style="color:#569cd6;">=&gt;</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">if</span>&nbsp;(<span style="color:#9cdcfe;">val</span>&nbsp;!=&nbsp;<span style="color:#ce9178;">"234"</span>)&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">return</span>&nbsp;<span style="color:#ce9178;">"必须输入【234】"</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">return</span>&nbsp;<span style="color:#ce9178;">""</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"Switch"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"Switch"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">dataKey:</span>&nbsp;<span style="color:#ce9178;">"enable"</span>,&nbsp;<span style="color:#6a9955;">//这里会从后台自动绑定数据源</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">false</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"switch"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//readonlyImg</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"checkbox"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//如果这里绑定了data数据，后台不会加载此数据源</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<span style="color:#9cdcfe;">key:</span>&nbsp;<span style="color:#b5cea8;">0</span>,&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"冬瓜"</span>&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<span style="color:#9cdcfe;">key:</span>&nbsp;<span style="color:#b5cea8;">1</span>,&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"西瓜"</span>&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<span style="color:#9cdcfe;">key:</span>&nbsp;<span style="color:#b5cea8;">2</span>,&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"南瓜"</span>&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<span style="color:#9cdcfe;">key:</span>&nbsp;<span style="color:#b5cea8;">3</span>,&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"哈密瓜"</span>&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"Fruits"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"checkbox"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"字段只读"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">readonly:</span>&nbsp;<span style="color:#569cd6;">true</span>,&nbsp;<span style="color:#6a9955;">//设置readonly或disabled都行</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"readonlyText"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"text"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//readonlyImg</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"级联1"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//如果这里绑定了data数据，后台不会加载此数据源</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"beijing"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">label:</span>&nbsp;<span style="color:#ce9178;">"北京"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">loading:</span>&nbsp;<span style="color:#569cd6;">false</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">children:</span>&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"gugong"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">label:</span>&nbsp;<span style="color:#ce9178;">"故宫"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"tiantan"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">label:</span>&nbsp;<span style="color:#ce9178;">"天坛"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"wangfujing"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">label:</span>&nbsp;<span style="color:#ce9178;">"王府井"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"cascader1"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"cascader"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//格式化显示(非必须)</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">formatter</span><span style="color:#9cdcfe;">:</span>&nbsp;(<span style="color:#9cdcfe;">labels</span>,&nbsp;<span style="color:#9cdcfe;">selectedData</span>)&nbsp;<span style="color:#569cd6;">=&gt;</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">const</span>&nbsp;<span style="color:#51b6c4;">index</span>&nbsp;=&nbsp;<span style="color:#9cdcfe;">labels</span>.<span style="color:#9cdcfe;">length</span>&nbsp;-&nbsp;<span style="color:#b5cea8;">1</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">const</span>&nbsp;<span style="color:#51b6c4;">data</span>&nbsp;=&nbsp;<span style="color:#9cdcfe;">selectedData</span>[<span style="color:#9cdcfe;">index</span>]&nbsp;||&nbsp;<span style="color:#569cd6;">false</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">if</span>&nbsp;(<span style="color:#9cdcfe;">data</span>&nbsp;&amp;&amp;&nbsp;<span style="color:#9cdcfe;">data</span>.<span style="color:#9cdcfe;">label</span>)&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">return</span>&nbsp;<span style="color:#9cdcfe;">labels</span>[<span style="color:#9cdcfe;">index</span>]&nbsp;+&nbsp;<span style="color:#ce9178;">"&nbsp;-&nbsp;"</span>&nbsp;+&nbsp;<span style="color:#9cdcfe;">data</span>.<span style="color:#9cdcfe;">label</span>&nbsp;+&nbsp;<span style="color:#ce9178;">"&nbsp;-&nbsp;(格式化测试)"</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">return</span>&nbsp;<span style="color:#9cdcfe;">labels</span>[<span style="color:#9cdcfe;">index</span>];
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"级联懒加载"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//如果这里绑定了data数据，后台不会加载此数据源</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">data:</span>&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">value:</span>&nbsp;<span style="color:#ce9178;">"zhejiang"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">label:</span>&nbsp;<span style="color:#ce9178;">"浙江"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">loading:</span>&nbsp;<span style="color:#569cd6;">false</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">children:</span>&nbsp;[]
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"cascader2"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"cascader"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//懒加载数据源</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">loadData</span><span style="color:#9cdcfe;">:</span>&nbsp;(<span style="color:#9cdcfe;">item</span>,&nbsp;<span style="color:#9cdcfe;">callback</span>)&nbsp;<span style="color:#569cd6;">=&gt;</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c586c0;">if</span>&nbsp;(<span style="color:#9cdcfe;">item</span>.<span style="color:#9cdcfe;">children</span>.<span style="color:#9cdcfe;">length</span>&nbsp;&gt;&nbsp;<span style="color:#b5cea8;">0</span>)&nbsp;<span style="color:#c586c0;">return</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">item</span>.<span style="color:#9cdcfe;">loading</span>&nbsp;=&nbsp;<span style="color:#569cd6;">true</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#569cd6;">this</span>.<span style="color:#9cdcfe;">http</span>.<span style="color:#dcdcaa;">post</span>(<span style="color:#ce9178;">"xxx"</span>).<span style="color:#dcdcaa;">then</span>(<span style="color:#9cdcfe;">children</span>&nbsp;<span style="color:#569cd6;">=&gt;</span>&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">item</span>.<span style="color:#9cdcfe;">loading</span>&nbsp;=&nbsp;<span style="color:#569cd6;">false</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">item</span>.<span style="color:#9cdcfe;">children</span>&nbsp;=&nbsp;<span style="color:#9cdcfe;">children</span>;
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//children格式或参照iview组件cascader动态加载选项的配置</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;item.children&nbsp;=&nbsp;[{</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;value:&nbsp;'hangzhou',</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;label:&nbsp;'杭州',</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;children:&nbsp;[{</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:&nbsp;'xihu',</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label:&nbsp;'西湖',</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;code:&nbsp;1000</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;&nbsp;&nbsp;}]</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//&nbsp;}]</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#dcdcaa;">callback</span>();
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"备注"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">required:</span>&nbsp;<span style="color:#569cd6;">true</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"IsTop"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">min:</span>&nbsp;<span style="color:#b5cea8;">3</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">max:</span>&nbsp;<span style="color:#b5cea8;">5</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">placeholder:</span>&nbsp;<span style="color:#ce9178;">"至少输入3个字符,最多只能输入5个字符"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">colSize:</span>&nbsp;<span style="color:#b5cea8;">12</span>,&nbsp;<span style="color:#6a9955;">//设置12，此列占100%宽度</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"textarea"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"图片只读"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">readonly:</span>&nbsp;<span style="color:#569cd6;">true</span>,&nbsp;<span style="color:#6a9955;">//设置readonly或disabled都行</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"readonlyImg"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"img"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">title:</span>&nbsp;<span style="color:#ce9178;">"可上传图片"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">field:</span>&nbsp;<span style="color:#ce9178;">"ProImg"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">type:</span>&nbsp;<span style="color:#ce9178;">"img"</span>,
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">maxSize:</span>&nbsp;<span style="color:#b5cea8;">0.2</span>,&nbsp;<span style="color:#6a9955;">//最大0.2M图片</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6a9955;">//上传参数可参照volupload组件</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9cdcfe;">url:</span>&nbsp;<span style="color:#ce9178;">"/api/App_Appointment/Upload"</span>
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+	</div>
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;};
+	</div>
+	<div>
+		&nbsp;&nbsp;}
+	</div>
+	<div>
+		};
+	</div>
+	<div>
+		<span style="color:#808080;">&lt;/</span><span style="color:#569cd6;">script</span><span style="color:#808080;">&gt;</span>
+	</div>
+<br />
+</div>`,
+  editTableKeep:`&lt;template&gt;<br />
+  &nbsp; &lt;div&gt;<br />
+  &nbsp; &nbsp; &lt;div class="vol-demo keep-edit"&gt;<br />
+  &nbsp; &nbsp; &nbsp; &lt;VolHeader icon="md-podium" text="始终开启编辑"&gt;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &lt;div slot="content"&gt;配置columns属性edit.keep=true即可始终开启编辑状态..&lt;/div&gt;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &lt;div style="text-align: right;"&gt;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Button type="info" size="small" ghost &gt;还没好想好&lt;/Button&gt;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br />
+  &nbsp; &nbsp; &nbsp; &lt;/VolHeader&gt;<br />
+  &nbsp; &nbsp; &nbsp; &lt;vol-table ref="table3" :columns="columns" :index="true" :tableData="tableData"&gt;&lt;/vol-table&gt;<br />
+  &nbsp; &nbsp; &lt;/div&gt;<br />
+  &nbsp; &nbsp; &lt;!-- 上传图片弹出框 --&gt;<br />
+  &nbsp; &nbsp; &lt;VolBox<br />
+  &nbsp; &nbsp; &nbsp; icon="ios-chatbubbles"<br />
+  &nbsp; &nbsp; &nbsp; :model.sync="model"<br />
+  &nbsp; &nbsp; &nbsp; title="选择图片"<br />
+  &nbsp; &nbsp; &nbsp; :height="220"<br />
+  &nbsp; &nbsp; &nbsp; :url="url"<br />
+  &nbsp; &nbsp; &nbsp; :width="520"<br />
+  &nbsp; &nbsp; &nbsp; :desc="true"<br />
+  &nbsp; &nbsp; &nbsp; :padding="15"<br />
+  &nbsp; &nbsp; &gt;<br />
+  &nbsp; &nbsp; &nbsp; &lt;VolUpload<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; style="text-align: center; border: 1px dotted #FF9800;padding: 20px;"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :autoUpload="false"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :multiple="true"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :url="url"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :max-file="3"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :img="true"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :fileInfo="fileInfo"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; :upload-after="uploadAfter"<br />
+  &nbsp; &nbsp; &nbsp; &gt;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;选择图片&lt;/div&gt;<br />
+  &nbsp; &nbsp; &nbsp; &lt;/VolUpload&gt;<br />
+  &nbsp; &nbsp; &lt;/VolBox&gt;<br />
+  &nbsp; &lt;/div&gt;<br />
+  &lt;/template&gt;<br />
+  &lt;script&gt;<br />
+  import VolBox from "@/components/basic/VolBox.vue";<br />
+  import VolTable from "@/components/basic/VolTable.vue";<br />
+  import VolUpload from "@/components/basic/VolUpload.vue";<br />
+  import VolHeader from "@/components/basic/VolHeader.vue";<br />
+  <br />
+  export default {<br />
+  &nbsp; components: { VolTable, VolBox, VolHeader, VolUpload },<br />
+  &nbsp; data() {<br />
+  &nbsp; &nbsp; return {<br />
+  &nbsp; &nbsp; &nbsp; url: "/api/app_news/upload", //使用后台自带的上传文件方法，也可以自定义方法上传<br />
+  &nbsp; &nbsp; &nbsp; uploadRow: {},<br />
+  &nbsp; &nbsp; &nbsp; fileInfo: [],<br />
+  &nbsp; &nbsp; &nbsp; model: false,<br />
+  &nbsp; &nbsp; &nbsp; tableData: [<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; userName: "拉美西斯",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; imgs:<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "https://imgs-1256993465.cos.ap-chengdu.myqcloud.com/h5pic/x2.jpg",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; enable: 1,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; date: "2020-03-18 17:45:54"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; userName: "梁什么伟",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; imgs:<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "https://imgs-1256993465.cos.ap-chengdu.myqcloud.com/h5pic/x2.jpg",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; enable: 0,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; date: "2020-03-20 12:20:30"<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; ],<br />
+  &nbsp; &nbsp; &nbsp; columns: [<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field: "userName",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; title: "用户名",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require: true,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; edit: { type: "text", keep: true },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; width: 150<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field: "imgs",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; title: "图文介绍",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; type: "img",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; width: 200<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field: "upload",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; title: "上传头像",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; width: 160,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; formatter: () =&gt; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return "&lt;div class='img-btn'&gt;选择图片&lt;/div&gt;";<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; click: (row, column, event) =&gt; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.uploadRow = row; //记录当前上传图片的行<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //清空上传组件的默认图片<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.fileInfo.splice(0);<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //如果当前的row行有图片，直接将图片添加上传组件中<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (row.imgs) {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; let _imgs = row.imgs.split(",");<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for (let i = 0; i &lt; _imgs.length; i++) {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.fileInfo.push({ path: _imgs[i], name: "11" });<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.model = true;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field: "enable",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; title: "是否可用",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require: true,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; width: 130,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; edit: { type: "switch", keep: true },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bind: {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //如果后面返回的数据为数据源的数据，请配置此bind属性，可以从后台字典数据源加载，也只以直接写上<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; key: "audit",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; data: [<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { key: 0, value: "否" },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { key: 1, value: "是" }<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; onChange: (row, column, data, value) =&gt; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.$Message.info(value ? "是" : "否");<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field: "date",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; title: "日期",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; edit: { type: "datetime", keep: true },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; width: 150<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field: "save",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; title: "操作",<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; width: 150,<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; formatter: () =&gt; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return "&lt;div&nbsp; class='oper-btn'&gt;保存&lt;/div&gt;";<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; click: (row, column, event) =&gt; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.$Message.info("当前保存的行数据：" + JSON.stringify(row));<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+  &nbsp; &nbsp; &nbsp; ]<br />
+  &nbsp; &nbsp; };<br />
+  &nbsp; },<br />
+  &nbsp; created() {},<br />
+  &nbsp; methods: {<br />
+  &nbsp; &nbsp; //文件上传后<br />
+  &nbsp; &nbsp; uploadAfter(result, files) {<br />
+  &nbsp; &nbsp; &nbsp; if (!result.status) return true;<br />
+  &nbsp; &nbsp; &nbsp; let imgs = [];<br />
+  &nbsp; &nbsp; &nbsp; files.forEach(x =&gt; {<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; imgs.push(result.data + x.name);<br />
+  &nbsp; &nbsp; &nbsp; });<br />
+  &nbsp; &nbsp; &nbsp; // //将图片填写表格中<br />
+  &nbsp; &nbsp; &nbsp; this.uploadRow.imgs = imgs.join(",");<br />
+  &nbsp; &nbsp; &nbsp; //强制刷新表格数据<br />
+  &nbsp; &nbsp; &nbsp; let _rows = this.tableData.splice(0);<br />
+  &nbsp; &nbsp; &nbsp; this.tableData.push(..._rows);<br />
+  &nbsp; &nbsp; &nbsp; this.model = false;<br />
+  &nbsp; &nbsp; &nbsp; return true;<br />
+  &nbsp; &nbsp; }<br />
+  &nbsp; }<br />
+  };<br />
+  &lt;/script&gt;<br />
+  <br />
+  &lt;style lang="less" scoped&gt;<br />
+  .vol-demo {<br />
+  &nbsp; box-shadow: 0px 0px 10px #ccc9c9;<br />
+  &nbsp; padding: 23px;<br />
+  }<br />
+  &lt;/style&gt;<br />
+  <br />
+  &lt;style scoped&gt;<br />
+  .keep-edit &gt;&gt;&gt; .oper-btn,<br />
+  .keep-edit &gt;&gt;&gt; .img-btn {<br />
+  &nbsp; width: 75px;<br />
+  &nbsp; border-radius: 4px;<br />
+  &nbsp; padding: 2px 15px;<br />
+  &nbsp; background: #eee;<br />
+  &nbsp; color: #fff;<br />
+  &nbsp; background-color: #03a9f4;<br />
+  &nbsp; border-color: #19be6b;<br />
+  &nbsp; text-align: center;<br />
+  &nbsp; font-size: 12px;<br />
+  &nbsp; line-height: 24px;<br />
+  &nbsp; cursor: pointer;<br />
+  }<br />
+  .keep-edit &gt;&gt;&gt; .oper-btn {<br />
+  &nbsp; background-color: #19be6b;<br />
+  }<br />
+  &lt;/style&gt;<br />
+  <br />
+  <span style="display:none;"></span>`
+  ,
   edittable: `<div class="cnblogs_code">
   <pre>&lt;template&gt;
     &lt;div&gt;
@@ -559,7 +1473,7 @@ let codeString = {
   &lt;script&gt;<span style="color: #000000;">
   import VolTable from </span>"@/components/basic/VolTable.vue"<span style="color: #000000;">;
   import VolHeader from </span>"@/components/basic/VolHeader.vue"<span style="color: #000000;">;
-  
+
   export </span><span style="color: #0000ff;">default</span><span style="color: #000000;"> {
     components: { VolTable, VolHeader },
     created() {},
@@ -769,10 +1683,13 @@ let codeString = {
         </span><span style="color: #008000;">//</span><span style="color: #008000;">  this.$message.error(JSON.stringify(row));</span>
   <span style="color: #000000;">    },
       loadTableBefore(param, callBack) {
-        </span><span style="color: #008000;">//</span><span style="color: #008000;">此处是从后台加数据前的处理，自己在此处自定义查询条件,查询数据格式自己定义或参考代码生成器查询页面请求的数据格式</span>
-        console.log("加载数据前" +<span style="color: #000000;"> param);
-        callBack(</span><span style="color: #0000ff;">true</span>); <span style="color: #008000;">//</span><span style="color: #008000;">此处必须进行回调，返回处理结果，如果是false，则不会执行后台查询</span>
-  <span style="color: #000000;">    },
+        callBack(true);
+        &nbsp; &nbsp; /*查询前处理(如果需要查询条件，实现组件方法loadBefore方法即可:<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; loadBefore=(param, callBack)=&gt;{<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; param.wheres = [{ name: "PhoneNo", value: "13419098211" }];<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; callBack(true);<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; })<br />
+          &nbsp; &nbsp; &nbsp; */<br />   },
       loadTableAfter(data, callBack) {
         </span><span style="color: #008000;">//</span><span style="color: #008000;">此处是从后台加数据后，你可以在渲染表格前，预先处理返回的数据</span>
         console.log("加载数据后" +<span style="color: #000000;"> data);
@@ -833,7 +1750,7 @@ let codeString = {
           &lt;/VolUpload&gt;
         &lt;/div&gt;
       &lt;/div&gt;
-  
+
       &lt;div class="upload-container"&gt;
         &lt;div class="upload-item"&gt;
           &lt;<span style="color: #000000;">VolUpload

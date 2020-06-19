@@ -73,7 +73,7 @@
                     :transfer="true"
                     v-model="formFileds[item.field]"
                     :multiple="(item.type=='select'||item.type=='drop')?false:true"
-                    :filterable="(item.filter||item.length>10)?true:false"
+                    :filterable="(item.filter||item.data.length>10)?true:false"
                     :placeholder="item.placeholder?item.placeholder:( '请选择'+item.title)"
                     @on-change="onChange(item,formFileds[item.field])"
                     clearable
@@ -111,7 +111,11 @@
                   </FormItem>
                 </Col>
               </Row>
-              <CheckboxGroup v-else-if="item.type=='checkbox'" v-model="formFileds[item.field]">
+              <CheckboxGroup
+                @on-change="(arr)=>{item.onChange&&item.onChange(arr)}"
+                v-else-if="item.type=='checkbox'"
+                v-model="formFileds[item.field]"
+              >
                 <Checkbox
                   v-for="(kv,kvIndex) in item.data"
                   :key="kvIndex"
@@ -132,11 +136,21 @@
                 :fileTypes="item.fileTypes?item.fileTypes:[]"
                 :upload-before="item.uploadBefore"
                 :upload-after="item.uploadAfter"
+                :append="item.append?true:false"
                 :on-change="item.onChange"
                 :file-click="item.fileClick"
                 :remove-before="item.removeBefore"
                 :down-load="item.downLoad?true:false"
               ></vol-upload>
+              <!-- 2020.05.31增加iview组件Cascader -->
+              <Cascader
+                v-else-if="item.type=='cascader'"
+                :load-data="item.loadData"
+                :data="item.data"
+                filterable
+                :render-format="item.formatter"
+                v-model="formFileds[item.field]"
+              ></Cascader>
               <Input
                 v-else-if="item.type=='textarea'"
                 v-model="formFileds[item.field]"
@@ -226,7 +240,7 @@ export default {
       remoteCall: true,
       errorImg: 'this.src="' + require("@/assets/imgs/error-img.png") + '"',
       rule: {
-        change: ["checkbox", "select", "date", "datetime", "drop", "radio"],
+        change: ["checkbox", "select","date", "datetime", "drop", "radio","cascader"],//2020.05.31增加级联类型
         phone: /^[1][3,4,5,6,7,8,9][0-9]{9}$/,
         decimal: /(^[\-0-9][0-9]*(.[0-9]+)?)$/,
         number: /(^[\-0-9][0-9]*([0-9]+)?)$/
@@ -490,15 +504,17 @@ export default {
       }
       //  this.remoteCall = true;
     },
-    validate(callback) {//表单验证回调方法callback
+    validate(callback) {
+      //表单验证回调方法callback
       let result = false;
       this.$refs["formValidate"].validate(valid => {
         if (!valid) {
           this.$Message.error("数据验证未通过!");
+          result = false;
         } else {
           result = true;
         }
-        if (typeof callback == "function") {
+        if (result && typeof callback == "function") {
           callback(valid);
         }
       });
@@ -765,7 +781,9 @@ export default {
       if (
         item.type == "select" ||
         item.type == "selectList" ||
-        item.type == "drop"
+        item.type == "checkbox" ||
+        item.type == "drop"||
+        item.type == "cascader"//2020.05.31增加级联类型
       ) {
         let _rule = {
           required: true,
@@ -797,6 +815,11 @@ export default {
       return {
         required: false
       };
+    },
+    getCheckBoxModel(arr) {
+      return arr;
+      console.log(arr);
+      return arr || [];
     }
   }
 };

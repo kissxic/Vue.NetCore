@@ -12,6 +12,7 @@ using System.Runtime.Loader;
 using System.Text;
 using System.Threading.Tasks;
 using VOL.Core.Const;
+using VOL.Core.DBManager;
 using VOL.Core.Enums;
 using VOL.Core.Extensions;
 using VOL.Core.ManageUser;
@@ -99,7 +100,30 @@ namespace DairyStar.Builder.Services
         }
 
         /// <summary>
+        /// 2020.05.17增加mysql获取表结构时区分当前所在数据库
+        /// </summary>
+        /// <returns></returns>
+        private string GetMysqlTableSchema()
+        {
+            try
+            {
+                string dbName = DBServerProvider.GetConnectionString().Split("Database=")[1].Split(";")[0]?.Trim();
+                if (!string.IsNullOrEmpty(dbName))
+                {
+                    dbName = $" and table_schema = '{dbName}' ";
+                }
+                return dbName;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"获取mysql数据库名异常:{ex.Message}");
+                return "";
+            }
+        }
+
+        /// <summary>
         /// 获取Mysql表结构信息
+        /// 2020.06.14增加对mysql数据类型double区分
         /// </summary>
         /// <returns></returns>
         private string GetMySqlModelInfo()
@@ -115,8 +139,10 @@ DISTINCT
                 'int'
                 WHEN data_type in ( 'BIGINT','bigint') THEN
                 'bigint'
-                WHEN data_type IN('FLOAT', 'DOUBLE', 'DECIMAL','float', 'double', 'decimal') THEN
+                WHEN data_type IN('FLOAT',  'DECIMAL','float', 'decimal') THEN
                 'decimal'
+							 WHEN data_type IN( 'DOUBLE', 'double') THEN
+                'double'
                 WHEN data_type IN('CHAR', 'VARCHAR', 'TINY TEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT', 'TINYBLOB', 'BLOB', 'MEDIUMBLOB', 'LONGBLOB', 'Time','char', 'varchar', 'tiny text', 'text', 'mediumtext', 'longtext', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'time') THEN
                 'nvarchar'
                 WHEN data_type IN('Date', 'DateTime', 'TimeStamp','date', 'datetime', 'timestamp') THEN
@@ -125,8 +151,9 @@ DISTINCT
             FROM
                 information_schema.COLUMNS
             WHERE
-                table_name = ?tableName;";
+                table_name = ?tableName {GetMysqlTableSchema()};";
         }
+
 
         /// <summary>
         /// 获取SqlServer表结构信息
@@ -154,7 +181,36 @@ DISTINCT
                                                                                   AND epTwo.name = 'MS_Description'
                                       WHERE     obj.name =@tableName) AS t";
         }
-
+        /// <summary>
+        /// 获取PgSQl表结构信息
+        /// </summary>
+        /// <returns></returns>
+        private string GetPgSqlModelInfo()
+        {
+            throw new Exception("开发中");
+            //            return $@"
+            //	SELECT DISTINCT
+            //    a.attnum as num,
+            //    a.attname as name,
+            //    format_type(a.atttypid, a.atttypmod) as typ,
+            //    a.attnotnull as notnull, 
+            //    com.description as comment,
+            //    coalesce(i.indisprimary,false) as primary_key,
+            //    def.adsrc as default
+            //FROM pg_attribute a 
+            //JOIN pg_class pgc ON pgc.oid = a.attrelid
+            //LEFT JOIN pg_index i ON 
+            //    (pgc.oid = i.indrelid AND i.indkey[0] = a.attnum)
+            //LEFT JOIN pg_description com on 
+            //    (pgc.oid = com.objoid AND a.attnum = com.objsubid)
+            //LEFT JOIN pg_attrdef def ON 
+            //    (a.attrelid = def.adrelid AND a.attnum = def.adnum)
+            //WHERE a.attnum > 0 AND pgc.oid = a.attrelid
+            //AND pg_table_is_visible(pgc.oid)
+            //AND NOT a.attisdropped
+            //AND pgc.relname = @tableName  -- Your table name here
+            //ORDER BY a.attnum;";
+        }
 
         private WebResponseContent ExistsTable(string tableName, string tableTrueName)
         {
@@ -223,12 +279,21 @@ DISTINCT
                 tableName = sysTableInfo.TableTrueName;
             }
 
+            string sql = "";
+            switch (DBType.Name)
+            {
+                case "MySql":
+                    sql = GetMySqlModelInfo();
+                    break;
+                case "PgSql":
+                    sql = GetPgSqlModelInfo();
+                    break;
+                default:
+                    sql = GetSqlServerModelInfo();
+                    break;
+            }
+            List<TableColumnInfo> tableColumnInfoList = repository.DapperContext.QueryList<TableColumnInfo>(sql, new { tableName });
             List<Sys_TableColumn> list = sysTableInfo.TableColumns;
-            List<TableColumnInfo> tableColumnInfoList = repository.DapperContext.QueryList<TableColumnInfo>(
-                DBType.Name == DbCurrentType.MySql.ToString() ? GetMySqlModelInfo() : GetSqlServerModelInfo(),
-                new { tableName = tableName });
-
-
             string msg = CreateEntityModel(list, sysTableInfo, tableColumnInfoList, 1);
             if (msg != "")
                 return msg;
@@ -252,7 +317,11 @@ DISTINCT
         {
             WebResponseContent webResponse = ValidColumnString(sysTableInfo);
             if (!webResponse.Status) return webResponse;
-
+            //2020.05.07新增禁止选择上级角色为自己
+            if (sysTableInfo.Table_Id == sysTableInfo.ParentId)
+            {
+                return WebResponseContent.Instance.Error($"父级id不能为自己");
+            }
             if (sysTableInfo.TableColumns != null)
             {
                 sysTableInfo.TableColumns.ForEach(x =>
@@ -290,11 +359,22 @@ DISTINCT
                 tableName = tableInfo.TableTrueName;
             }
 
+            string sql;
+            if (DBType.Name.ToLower() == DbCurrentType.MySql.ToString().ToLower())
+            {
+                sql = GetMySqlStructure(tableName);
+            }
+            else if (DBType.Name.ToLower() == DbCurrentType.PgSql.ToString().ToLower())
+            {
+                throw new Exception("开发中");
+            }
+            else
+            {
+                sql = GetSqlServerStructure(tableName);
+            }
             //获取表结构
             List<Sys_TableColumn> columns = repository.DapperContext
-                  .QueryList<Sys_TableColumn>(
-                  IsMysql() ? GetMySqlStructure(tableName) : GetSqlServerStructure(tableName),
-                  new { tableName });
+                  .QueryList<Sys_TableColumn>(sql, new { tableName });
             if (columns == null || columns.Count == 0)
                 return webResponse.Error("未获取到【" + tableName + "】表结构信息，请确认表是否存在");
 
@@ -919,7 +999,7 @@ DISTINCT
                 FROM
                     information_schema.COLUMNS
                 WHERE
-                    table_name = ?tableName";
+                    table_name = ?tableName {GetMysqlTableSchema()}";
         }
 
         /// <summary>
@@ -1348,9 +1428,9 @@ DISTINCT
                     column.Maxlength = 0;
                 }
 
-                if (column.ColumnType == "string" && column.Maxlength > 0&& column.Maxlength < 8000)
+                if (column.ColumnType == "string" && column.Maxlength > 0 && column.Maxlength < 8000)
                 {
-                 
+
                     AttributeBuilder.Append("       [MaxLength(" + column.Maxlength + ")]");
                     AttributeBuilder.Append("\r\n");
                 }
@@ -1362,7 +1442,7 @@ DISTINCT
                     AttributeBuilder.Append("\r\n");
                 }
                 //[Column(TypeName="bigint")]如果与字段类型不同会产生异常
-          
+
                 if (tableColumnInfo != null)
                 {
                     if (!string.IsNullOrEmpty(tableColumnInfo.Prec_Scale) && !tableColumnInfo.Prec_Scale.EndsWith(",0"))
@@ -1384,8 +1464,8 @@ DISTINCT
                         if (column.IsKey != 1 && column.ColumnType.ToLower() == "string")
                         {
                             //没有指定长度的字符串字段 ，如varchar,nvarchar，text等都默认生成varchar(max),nvarchar(max)
-                            if (column.Maxlength <= 0 
-                                || (tableColumnInfo.ColumnType=="varchar"&& column.Maxlength>8000)
+                            if (column.Maxlength <= 0
+                                || (tableColumnInfo.ColumnType == "varchar" && column.Maxlength > 8000)
                                 || (tableColumnInfo.ColumnType == "nvarchar" && column.Maxlength > 4000))
                             {
                                 maxLength = "(max)";
@@ -1517,6 +1597,12 @@ DISTINCT
             //}
             if (!string.IsNullOrEmpty(tableInfo.TableTrueName) && tableInfo.TableName != tableInfo.TableTrueName)
             {
+                string tableTrueName = tableInfo.TableTrueName;
+                //2020.06.14 pgsql数据库，设置表名为小写(数据库创建表的时候也要使用小写)
+                if (DBType.Name == DbCurrentType.PgSql.ToString())
+                {
+                    tableTrueName = tableTrueName.ToLower();
+                }
                 tableAttr = tableAttr + "\r\n[Table(\"" + tableInfo.TableTrueName + "\")]";
             }
             domainContent = domainContent.Replace("{AttributeManager}", tableAttr).Replace("{Namespace}", modelNameSpace);

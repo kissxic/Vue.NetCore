@@ -29,14 +29,14 @@
           :min-width="column.width"
           :formatter="formatter"
           :fixed="column.fixed"
+          :align="column.align"
           :sortable="column.sort||cindex==0?'custom':false"
         >
           <template slot-scope="scope">
             <!-- 启用双击编辑功能，带编辑功能的不会渲染下拉框文本背景颜色 -->
             <!-- @click="rowBeginEdit(scope.$index,cindex)" -->
             <div v-if="column.edit" class="edit-el">
-              <div v-if="edit.rowIndex!=scope.$index">{{formatter(scope.row,column,true)}}</div>
-              <div v-else class="e-item">
+              <div v-if="column.edit.keep|| edit.rowIndex==scope.$index" class="e-item">
                 <div>
                   <DatePicker
                     :transfer="true"
@@ -52,11 +52,12 @@
                     :true-value="typeof scope.row[column.field]=='boolean' ? true:1"
                     :false-value="typeof scope.row[column.field]=='boolean' ? false:0"
                     v-model="scope.row[column.field]"
+                    @on-change="(value)=>{column.onChange&&column.onChange(column,scope.row,url?rowData:tableData,value);}"
                   >
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                   </i-switch>
-                  <!--如果是1或0请加上属性 true-value="1" false-value="0" 
+                  <!--如果是1或0请加上属性 true-value="1" false-value="0"
                如果value是字符串数字则使用 :true-value="1" :false-value="0"
                   -->
                   <Select
@@ -71,7 +72,7 @@
                     <Option
                       v-for="(kv,kvIndex) in getSelectedOptions(column)"
                       :key="kvIndex"
-                      :value="kv.key||''"
+                      :value="kv.key===undefined?'':kv.key"
                     >{{kv.value}}</Option>
                   </Select>
                   <Input
@@ -92,6 +93,10 @@
                   </a>
                 </div>
               </div>
+              <template v-else>
+                <div v-if="column.formatter" v-html="column.formatter(scope.row,column)"></div>
+                <div v-else>{{formatter(scope.row,column,true)}}</div>
+              </template>
             </div>
             <!--没有编辑功能的直接渲染标签-->
             <div v-else>
@@ -106,7 +111,7 @@
                 v-for="(file,vIndex ) in  getFilePath(scope.row[column.field])"
                 :key="vIndex"
                 :onerror="defaultImg"
-                @click="viewImg(scope.row,column)"
+                @click="viewImg(scope.row,column,file.path)"
                 class="table-img"
                 :src="file.path"
               />
@@ -122,7 +127,7 @@
               <div
                 v-else-if="column.formatter"
                 @click="formatterClick(scope.row,column)"
-                v-html="column.formatter&&column.formatter(scope.row,column)"
+                v-html="column.formatter(scope.row,column)"
               ></div>
               <div
                 v-else-if="column.click"
@@ -352,6 +357,7 @@ export default {
           this.remoteColumns.push(x);
         } else if (this.loadKey) {
           keys.push(x.bind.key);
+          x.bind.valueTyoe = x.type;
           columnBind.push(x.bind);
         }
       }
@@ -360,6 +366,12 @@ export default {
       this.http.post("/api/Sys_Dictionary/GetVueDictionary", keys).then(dic => {
         dic.forEach(x => {
           columnBind.forEach(c => {
+            //转换数据源的类型与列的类型一致(2020.04.04)
+            if (c.valueTyoe == "int" || c.valueTyoe == "sbyte") {
+              x.data.forEach(d => {
+                d.key = ~~d.key;
+              });
+            }
             if (c.key == x.dicNo) c.data.push(...x.data);
           });
         });
@@ -697,8 +709,8 @@ export default {
       }
       this.rowData.push(row);
     },
-    viewImg(row, column) {
-      this.base.previewImg(row[column.field], this.http.ipAddress);
+    viewImg(row, column, url) {
+      this.base.previewImg(url, this.http.ipAddress);
       // window.open(row[column.field]);
     },
     link(row, column) {
@@ -914,7 +926,9 @@ export default {
         return this.getSelectFormatter(column, val);
       }
       let source = column.bind.data.filter(x => {
-        return x.key != "" && x.key == val;
+        // return x.key != "" && x.key == val;
+        //2020.06.06修复单独使用table组件时,key为数字0时转换成文本失败的问题
+        return x.key !== "" && x.key !== undefined && x.key + "" === val + "";
       });
       if (source && source.length > 0) val = source[0].value;
       return val;
@@ -924,7 +938,8 @@ export default {
       let valArr = val.split(",");
       for (let index = 0; index < valArr.length; index++) {
         column.bind.data.forEach(x => {
-          if (x.key != "" && x.key == valArr[index]) {
+           //2020.06.06修复数据源为selectList时,key为数字0时不能转换文本的问题
+          if (x.key !== "" && x.key !== undefined && x.key+'' == valArr[index]+'') {
             valArr[index] = x.value;
           }
         });
@@ -1035,9 +1050,11 @@ export default {
   background: #ddd;
 }
 .vol-table .table-img {
-  height: 70px;
+  height: 40px;
   border-radius: 5px;
   margin-right: 10px;
+  width: 40px;
+  object-fit: cover;
 }
 .vol-table .table-img:hover {
   cursor: pointer;

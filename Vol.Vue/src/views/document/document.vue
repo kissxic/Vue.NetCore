@@ -2,7 +2,7 @@
   <div class="view-model-content" style="width: 100%;
     display: inline-block;
     height: 99%;">
-    <el-scrollbar style="height:100%;">
+    <!-- <el-scrollbar style="height:100%;"> -->
       <div class="links">
         <div
           class="item"
@@ -11,7 +11,7 @@
           v-for="(item,index) in timeline"
           :key="index"
         >
-          <span @click="change(item,index)">{{item.text}}</span>
+          <span @click="change(item,index)" :class="{new:item.new}">{{item.text}}</span>
         </div>
       </div>
       <div>
@@ -25,7 +25,7 @@
           <router-view></router-view>
         </div>
       </div>
-    </el-scrollbar>
+    <!-- </el-scrollbar> -->
   </div>
 </template>
 <script>
@@ -52,7 +52,12 @@ export default {
       }
     }
     this.text = this.timeline[this.activedIndex].text;
-    this.$Message.error("开发文档已在整理中。。。");
+      // this.$Notice.success({
+      //               title: '文档更新提示',
+      //               desc: '文档已在持续更新中,见[前端开发]',
+      //               duration: 0
+      //           });
+   // this.$Message.error("开发文档已在整理中。。。");
   },
   data() {
     return {
@@ -60,17 +65,12 @@ export default {
       activedIndex: 0,
       timeline: [
         {
-          text: "QQ群：还没想好!",
-          path: "#",
-          actived: false
-        },
-        {
           text: "返回首页",
           path: "/home",
           actived: false
         },
         {
-          text: "项目启动",
+          text: "项目启动与发布",
           path: "/document/guide",
           actived: false
         },
@@ -87,7 +87,8 @@ export default {
         {
           text: "前端开发",
           path: "/document/vueDev",
-          actived: false
+          actived: false,
+          new:true
         },
         {
           text: "后台开发",
@@ -175,7 +176,7 @@ export default {
   position: relative;
 
   height: 100%;
-  max-width: 1200px;
+  max-width: 1250px;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -185,6 +186,15 @@ export default {
 .doc-api {
   max-width: 100%;
   padding: 80px 40px;
+}
+.new:after{
+    content: ".";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ececea;
+    top: 11px;
+    border-radius: 50%;
 }
 </style>
 <style scoped>

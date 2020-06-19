@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,18 @@ namespace VOL.System.Services
         {
             string msg = string.Empty;
             WebResponseContent responseContent = new WebResponseContent();
+            //   2020.06.12增加验证码
+            IMemoryCache memoryCache = HttpContext.Current.GetService<IMemoryCache>();
+            string cacheCode = (memoryCache.Get(loginInfo.UUID) ?? "").ToString();
+            if (string.IsNullOrEmpty(cacheCode))
+            {
+                return responseContent.Error("验证码已失效");
+            }
+            if (cacheCode.ToLower() != loginInfo.VerificationCode.ToLower())
+            {
+                memoryCache.Remove(loginInfo.UUID);
+                return responseContent.Error("验证码不正确");
+            }
             try
             {
                 Sys_User user = await repository.FindAsIQueryable(x => x.UserName == loginInfo.UserName)
@@ -55,6 +68,7 @@ namespace VOL.System.Services
             }
             finally
             {
+                memoryCache.Remove(loginInfo.UUID);
                 Logger.Info(LoggerType.Login, loginInfo.Serialize(), responseContent.Message, msg);
             }
         }
@@ -198,17 +212,31 @@ namespace VOL.System.Services
         /// <returns></returns>
         public override PageGridData<Sys_User> GetPageData(PageDataOptions pageData)
         {
-
+            int roleId = -1;
+            //树形菜单传查询角色下所有用户
+            if (pageData.Value != null)
+            {
+                roleId = pageData.Value.ToString().GetInt();
+            }
             QueryRelativeExpression = (IQueryable<Sys_User> queryable) =>
             {
-                if (UserContext.Current.IsSuperAdmin) return queryable;
+                if (roleId <= 0)
+                {
+                    if (UserContext.Current.IsSuperAdmin) return queryable;
+                    roleId = UserContext.Current.RoleId;
+                }
 
                 //查看用户时，只能看下自己角色下的所有用户
                 List<int> roleIds = Sys_RoleService
                    .Instance
-                   .GetAllChildrenRoleId(UserContext.Current.RoleId).Result;
-                //roleIds.Contains(x.Role_Id) || x.User_Id == UserContext.Current.UserId此处查询存在性能问题，根据实际情况自行解决
-                return queryable.Where(x => roleIds.Contains(x.Role_Id) || x.User_Id == UserContext.Current.UserId);
+                   .GetAllChildrenRoleId(roleId);
+                roleIds.Add(roleId);
+                //判断查询的角色是否越权
+                if (roleId != UserContext.Current.RoleId && !roleIds.Contains(roleId))
+                {
+                    roleId = -999;
+                }
+                return queryable.Where(x => roleIds.Contains(x.Role_Id));
             };
             base.OrderByExpression = x => new Dictionary<object, Core.Enums.QueryOrderBy>() {
                 { x.CreateDate, Core.Enums.QueryOrderBy.Desc },
@@ -231,7 +259,7 @@ namespace VOL.System.Services
                 if (roleId > 0)
                 {
                     string roleName = GetChildrenName(roleId);
-                    if (!UserContext.Current.IsSuperAdmin || roleId == 1 || string.IsNullOrEmpty(roleName))
+                    if ((!UserContext.Current.IsSuperAdmin && roleId == 1) || string.IsNullOrEmpty(roleName))
                         return responseData.Error("不能选择此角色");
                     //选择新建的角色ID，手动添加角色ID的名称
                     userModel.MainData["RoleName"] = roleName;
@@ -277,8 +305,7 @@ namespace VOL.System.Services
                 var delUserIds = repository.Find(x => userIds.Contains(x.User_Id), s => new { s.User_Id, s.Role_Id, s.UserTrueName });
                 List<int> roleIds = Sys_RoleService
                    .Instance
-                   .GetAllChildrenRoleId(UserContext.Current.RoleId)
-                   .Result;
+                   .GetAllChildrenRoleId(UserContext.Current.RoleId);
 
                 string[] userNames = delUserIds.Where(x => !roleIds.Contains(x.Role_Id))
                  .Select(s => s.UserTrueName)
@@ -303,8 +330,7 @@ namespace VOL.System.Services
             //只能修改当前角色能看到的用户
             string roleName = Sys_RoleService
                 .Instance
-                .GetAllChildren(UserContext.Current.UserInfo.Role_Id)
-                .Result.Where(x => x.Id == roleId)
+                .GetAllChildren(UserContext.Current.UserInfo.Role_Id).Where(x => x.Id == roleId)
                 .Select(s => s.RoleName).FirstOrDefault();
             return roleName;
         }
@@ -323,14 +349,16 @@ namespace VOL.System.Services
             base.UpdateOnExecute = (SaveModel saveInfo) =>
             {
                 int roleId = saveModel.MainData["Role_Id"].GetInt();
-                string roleName = GetChildrenName(roleId);
+                string roleName =  GetChildrenName(roleId);
+                saveInfo.MainData.TryAdd("RoleName", roleName);
                 if (UserContext.IsRoleIdSuperAdmin(userInfo.Role_Id))
                 {
-                    saveInfo.MainData.Add("RoleName", roleName);
+                    if (userInfo.Role_Id == roleId)
+                    {
+                        saveInfo.MainData["RoleName"]=userInfo.RoleName;
+                    }
                     return responseContent.OK();
                 }
-                if (saveInfo.MainData.ContainsKey("RoleName"))
-                    saveInfo.MainData.Remove("RoleName");
                 if (string.IsNullOrEmpty(roleName)) return responseContent.Error("不能选择此角色");
 
                 return responseContent.OK();
@@ -370,8 +398,7 @@ namespace VOL.System.Services
                 if (UserContext.Current.IsSuperAdmin) return queryable;
                 List<int> roleIds = Sys_RoleService
                  .Instance
-                 .GetAllChildrenRoleId(UserContext.Current.RoleId)
-                 .Result;
+                 .GetAllChildrenRoleId(UserContext.Current.RoleId);
                 return queryable.Where(x => roleIds.Contains(x.Role_Id) || x.User_Id == UserContext.Current.UserId);
             };
 
